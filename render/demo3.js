@@ -8,3 +8,15 @@ aHref.onclick= function(e){
 
     shell.openExternal(href)
 }
+
+var mybtn = document.querySelector('#mybtn')
+
+mybtn.onclick = function(e){
+    window.open('./popup_page.html')
+}
+
+//子父页面传递信息
+window.addEventListener('message',(msg)=>{
+    let mytext=document.querySelector('#mytext')
+    mytext.innerHTML=JSON.stringify(msg.data)
+})
