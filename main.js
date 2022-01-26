@@ -4,6 +4,9 @@ var electron = require('electron')
 var app = electron.app
 var BrowserWindows = electron.BrowserWindow
 
+//快捷键
+var globalShortcut = electron.globalShortcut
+
 var mainWindow = null
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS']='true'
 
@@ -17,10 +20,18 @@ app.on('ready',function(){
             enableRemoteModule:true
         }
     })
+
+    //快捷键
+    globalShortcut.register('ctrl+e',function(){
+        mainWindow.loadURL('https://jspang.com')
+    })
+    let isRegister = globalShortcut.isRegistered('ctrl+e')?'Register Sucess':'Register Failed'
+    console.log(isRegister)
+
     require('./main/menu.js')
     require('@electron/remote/main').initialize()
     require('@electron/remote/main').enable(mainWindow.webContents)
-    mainWindow.loadFile('demo3.html')
+    mainWindow.loadFile('demo7.html')
     mainWindow.openDevTools() //打开调试模式
 
     //BrowserView
@@ -41,4 +52,10 @@ app.on('ready',function(){
         mainWindow=null
     })
     
+})
+
+app.on('will-quit',function(){
+    //注销全局快捷键方法
+    globalShortcut.unregister('ctrl+e')
+    globalShortcut.unregisterAll()
 })
